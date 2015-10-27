@@ -150,45 +150,9 @@ public class ControlBus {
 		// TODO only trigger if the current setup has been longer than t intervals.
 		if (objectivesToBeOptimized != null) {
 		
-			System.out.print("Number of regions that need to be optimized: " 
-					+ objectivesToBeOptimized.size() + "\n");
-			
-			for (final Objective obj : objectivesToBeOptimized) {
-				final String uuid = UUID.randomUUID().toString();
-				// Optimize them on separate thread, if two or more are in the same group
-				// then only the first one can trigger optimization as implemented in 
-				// SuperRegionControl
-				Future f = SSAScalingThreadPool.submitJob(new Runnable(){
-
-					@Override
-					public void run() {
-						 doDecisionMaking(obj, uuid);
-					}
-					
-				});
-				
-				SSAScalingThreadPool.putThread(uuid, f);
-			    
-			}
+		
 		}
 		
-		synchronized(lock) {
-			while (objectivesToBeOptimized != null && lock.get() != objectivesToBeOptimized.size()) {
-				try {
-					lock.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-				
-			}
-			
-			// Reset counter to zero upon finish.
-			lock.set(-1);
-			objectivesToBeOptimized = null;
-			lock.notifyAll();
-			System.out.print("***** MAPE finished " + samples + " *********\n");
-		}
 		System.out.print("Decision making takes " + (System.currentTimeMillis() - time) + " ms \n");
 		
 		System.gc();
@@ -202,12 +166,12 @@ public class ControlBus {
 	 * optimization or region partitioning.
 	 * @param obj
 	 */
-	public void doDecisionMaking (Objective obj, String uuid){
+	public void doDecisionMaking (List<Objective> objs){
 		/*
 		 *The P part 
 		 ***/
 		// If need trigger optimization in the Planer, then the Analyzer should tell.
-		final LinkedHashMap<ControlPrimitive, Double>  decisions = Planner.optimize(obj, uuid);
+		final LinkedHashMap<ControlPrimitive, Double>  decisions = Planner.optimize(objs);
 		// Get the result from Planer to the Executor who will trigger Actuator. 
 		
 		// If the region is under optimization already or there is no

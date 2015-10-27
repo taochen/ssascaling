@@ -10,7 +10,16 @@ import org.ssascaling.region.SuperRegionControl;
 public class Planner {
 
 
-	public static LinkedHashMap<ControlPrimitive, Double> optimize (Objective obj, String uuid) {
-		return SuperRegionControl.getInstance().optimize(obj, uuid);
+	/**
+	 * TODO Maria:
+	 * 
+	 * 
+	 * You need to put your decision making approach here
+	 * 
+	 * @param objs a list of objectives that is considered being violated.
+	 * @return
+	 */
+	public static LinkedHashMap<ControlPrimitive, Double> optimize (List<Objective> objs) {
+		return null;
 	}
 }

@@ -19,106 +19,29 @@ import org.ssascaling.util.SSAScalingThreadPool;
 
 public class Analyzer {
 
-	
-	
-	// Ensure it proceeds to Plan phase only if all the models are trained and updated. 
-	private final static AtomicInteger updatedModel = new AtomicInteger(0);
-	
-	private static boolean isReachTheLeastSamples = false;
-	
+	/**
+	 * 
+	 * TODO Maria:
+	 * 
+	 * You need to put your own analyzer approach here, I have already left the code for the detection of violation, and the code
+	 * for updating the sensed values in cloud primitive and QoS objects.
+	 * 
+	 * The return is a list of objectives that is considered being violated.
+	 * 
+	 * @param samples the index of sample, e.g., 1, 2, 3 ...
+	 * @return a list of objectives that is considered being violated
+	 */
 	public static List<Objective> doAnalysis(long samples){
 		
 		
-		// should block the training of new models of different threads, (This has been done by using the lock
-		// in ControlBus class).
-		// Trigger detectSymptoms only when all models have been trained.
-		updateModels(samples);
+		// Actually adding the values
+		doAddValues(samples);
 		
-		synchronized(updatedModel) {
-			while (updatedModel.get() != Repository.getQoSSet().size()) {
-				try {
-					updatedModel.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-				
-			}
-			//System.out.print("========================== run ===============================\n");
-			//System.out.print(Thread.currentThread() + " run\n");
-			//System.out.print("========================== run ===============================\n");
-			
-			doResetValues();
-			// Reset counter to zero upon finish all modeling.
-			updatedModel.set(0);
-		}
-		// Directly go for detection, the change of model would be detected by the listeners
-		// in RegionControl
 		
 		return detectSymptoms();
 	}
 	
-	/**
-	 * This is to train the models in adaptive multi-learners.
-	 */
-	private static void updateModels(long samples) {
-
-		// Trigger the 'prepareToAddValue', 
-		// Alternatively, we could get this done in Monitor. If later we need to remove the historical
-		// data from memory, and only load them upon training, we can resume this method.
-		
-		// updatePrimitivesAndQoSFromFiles();
-		// Actually adding the values.
-		doAddValues(samples);
-		
-		for (final QualityOfService qos : Repository.getQoSSet()) {
-			
-			
-			SSAScalingThreadPool.executeJob(new Runnable() {
-
-				@Override
-				public void run() {
-					//System.out.print("***** doing training *********\n");
-					boolean result = false;
-					try {
-						
-						
-					   result = qos.doTraining();
-					   
-					   
-					} catch (RuntimeException e) {
-						// Make sure the process can keep going and avoid deadlock.
-						e.printStackTrace();
-						synchronized(updatedModel) {
-							updatedModel.incrementAndGet();
-							//System.out.print("==========================  ===============================\n");
-							//System.out.print(updatedModel.get() + " processed\n");
-							//System.out.print("==========================  ===============================\n");
-							isReachTheLeastSamples = result;
-							if (updatedModel.get() == Repository.getQoSSet().size()) {
-								updatedModel.notifyAll();
-							}
-						}
-					}
-					synchronized(updatedModel) {
-						updatedModel.incrementAndGet();
-						//System.out.print("==========================  ===============================\n");
-						//System.out.print(updatedModel.get() + " processed\n");
-						//System.out.print("==========================  ===============================\n");
-					
-						isReachTheLeastSamples = result;
-						if (updatedModel.get() == Repository.getQoSSet().size()) {
-							updatedModel.notifyAll();
-						}
-					}
-					//System.out.print("***** finish doing training *********\n");
-				}
-
-			});
-		}
-
-		
-	}
+	
 	
 	private static void doAddValues(long samples){
 		
@@ -138,6 +61,8 @@ public class Analyzer {
 			qos.doAddValue(samples);
 		}
 			
+
+		doResetValues();
 	}
 	
 	/**
@@ -165,21 +90,9 @@ public class Analyzer {
 			
 	}
 	
-	private static void updatePrimitivesAndQoSFromFiles(){
-		// TODO read the latest data from the file, these should update newly measured
-		// data of all QoS and primitives.
-		 org.ssascaling.util.Util.readMeasuredData();
-		// For QoS and primitives, should use prepareToAddValue here, as the actual 'add' operation is done
-		// in 'updateModels' function.
-	}
 	
 	private static  List<Objective> detectSymptoms(){
-		// Done! only trigger if the current violation has been longer than t intervals and the current
-		// configuration has been up and running for t intervals.
-		if (!isReachTheLeastSamples /*Only detect when essential number of samples have been collected*/) {
-			return null;
-		}
-		
+	
 		
 		// TODO add proactive detection based on the QoS models.
 		// as here we have only reactive detection on violation of QoS and CP utilization.
@@ -201,11 +114,7 @@ public class Analyzer {
 			 s.updateCostModelInputs();
 		 }*/
 		 
-		 // Doing the first run of filtering objectives that belong to the same region.
-		 // TODO May also communicate with other PM.
-		 if (!ControlBus.isTestQoSModelingOnly) {
-		    SuperRegionControl.getInstance().filterObjective(result);
-		 }
+		
 		  
 		 return result;
 		 
