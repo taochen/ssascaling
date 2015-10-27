@@ -47,7 +47,7 @@ public class Ssascaling {
 			activate();
 		}
 		
-		if ("0".equals(arg[0])) {
+		/*if ("0".equals(arg[0])) {
 			activate ();
 		} else if ("1".equals(arg[0])) {
 			testExecution();
@@ -57,7 +57,7 @@ public class Ssascaling {
 			activateSensors("192.168.0.103");
 		} else {
 			testExecution();
-		}
+		}*/
 		
 	}
 	
@@ -477,7 +477,7 @@ public class Ssascaling {
 			}
 			
 			Executor.init(3);
-			new HistoryLoader().run();
+			//new HistoryLoader().run();
 					
 			new Receiver().receive();
 			

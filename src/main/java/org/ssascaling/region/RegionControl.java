@@ -264,7 +264,7 @@ public class RegionControl implements ModelListener {
 
 					@Override
 					public void run() {
-						ControlBus.getInstance().doDecisionMaking(entry.getValue().getVal1(), uuid);
+						//ControlBus.getInstance().doDecisionMaking(entry.getValue().getVal1(), uuid);
 					}
 
 				});

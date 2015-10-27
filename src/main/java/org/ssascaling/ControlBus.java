@@ -26,12 +26,14 @@ public class ControlBus {
 	// Ensure only one MAPE loop running at a time.
 	// This is the main lock of MAPE loop, in case the repository 
 	// would change, it also need to rely on this lock.
-	protected final AtomicInteger lock = new AtomicInteger(-1);
+	protected AtomicInteger lock = new AtomicInteger(-1);
 	protected List<Objective> objectivesToBeOptimized = null;
 	
 	protected long expectedSample = Monitor.getNumberOfNewSamples();
 	
 	private static ControlBus instance = new ControlBus();
+	
+	 
 	
 	protected ControlBus (){
 		
@@ -55,9 +57,15 @@ public class ControlBus {
 		 ***/
 		
 		long samples = Monitor.write(is);
-		boolean ifAnalyze = samples == 0? false : true;
+		boolean ifAnalyze = Monitor.isSyncMonitoring? samples == 0? false : true : true;
 		if (!ifAnalyze) {
 			return;
+		}
+		
+		
+		if (!Monitor.isSyncMonitoring) {
+			// Create new instance to avoid locking.
+			lock = new AtomicInteger(-1);
 		}
 		
 		System.out.print("**** MAPE start: " + samples  + "\n");
@@ -122,7 +130,7 @@ public class ControlBus {
 		
 		long time = System.currentTimeMillis();
 		if (ifAnalyze) {
-			System.out.print("***** will trigger training *********\n");
+			//System.out.print("***** will trigger training *********\n");
 			/*
 			 *The A part 
 			 ***/

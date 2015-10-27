@@ -1,3 +1,22 @@
+<!-- -
+
+provision = the initial value; 
+constraint = the lowest possible utilization for triggering autoscaling; 
+differences = the margin between two neighbor values, e.g. step = 5 would give 5MB, 10MB and 15MB etc; 
+min = the minimum value; 
+max = the maximum value; 
+pre_to_max = the % threshold to trigger change of the max value; 
+pre_of_max = the % extent to which the max value is changed; 
+price_per_unit = the price per unit per interval for a service-instance.
+
+Please note that the min and max are dynamically updated. The lower bound is set to the maximum 
+of a predefined value and the latest observed one. On the other hand, 
+after the upper bound is set as an initial value, it is then dynamically adjusted 
+based on the newly decided value and the latest observed one, i.e., it is increased by "pre_of_max"% if both
+values converge to the upper bound larger than "pre_to_max"; likewise, it is decreased by "pre_of_max"% if both values diverge 
+from the upper bound smaller than "pre_to_max".
+-->
+
 <ssascaling>
   <vm id="jeos">
   

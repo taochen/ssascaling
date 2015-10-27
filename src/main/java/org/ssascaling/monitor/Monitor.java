@@ -30,10 +30,18 @@ public class Monitor {
 	private static long previousNumberOfSample = 0;
 	// Inlcude all QoS, CP and EP, we can only trigger MAPE once all associated data has been senced.
 	
+	
+	// Identify if the order of sampling interval needs to be garauntee.
+	// If this is ture, then totalNumberOfSenceToTriggerModeling and totalNumberOfVM are needed
+	public static final boolean isSyncMonitoring = false;
+	
 	// Should equals to totalNumberOfVM if need 1 modeling interval = sampling interval
-	// This should be a multiple of totalNumberOfVM.
+	// This should be a multiply of totalNumberOfVM.
 	private static long totalNumberOfSenceToTriggerModeling = 3;
 	private static long totalNumberOfVM = 3;
+	
+	
+	
 	private static long numberOfSenceToTriggerModeling = 0;
 	
 	// Called by updatePrimitivesAndQoSFromFiles in Analyzer class, so do not need
@@ -44,6 +52,11 @@ public class Monitor {
 	
 	public synchronized static void updateNumberOfSenceToTriggerModeling(int number){		
 		 totalNumberOfSenceToTriggerModeling = number;
+		
+	}
+	
+	public synchronized static void updateNumberOfVM(int number){		
+		totalNumberOfVM = number;
 		
 	}
 	
