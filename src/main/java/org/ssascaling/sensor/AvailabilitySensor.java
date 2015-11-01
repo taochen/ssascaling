@@ -13,7 +13,7 @@ public class AvailabilitySensor implements Sensor {
 	private long startTime = System.currentTimeMillis() 
 	- (SensoringController.getSampleInterval() * QualityOfService.leastNumberOfSample);
 	private double downTime = 0.0;
-	private double timeout = 1.0;//ms 120
+	private double timeout = 4.0;//ms 120
 	
 	
 
