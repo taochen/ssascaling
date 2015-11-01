@@ -7,7 +7,9 @@ min = the minimum value;
 max = the maximum value; 
 pre_to_max = the % threshold to trigger change of the max value; 
 pre_of_max = the % extent to which the max value is changed; 
-price_per_unit = the price per unit per interval for a service-instance.
+price_per_unit = the price per unit per hour for a service-instance.
+
+(the unit for all cost/price in the file is per hour)
 
 Please note that the min and max are dynamically updated. The lower bound is set to the maximum 
 of a predefined value and the latest observed one. On the other hand, 
@@ -21,7 +23,7 @@ from the upper bound smaller than "pre_to_max".
   <vm id="jeos">
   
            <hardwareControlPrimitive>
-              <item name="CPU" provision="30" constraint="0.2" differences="1" 
+              <item name="CPU" provision="30" constraint="0.5" differences="1" 
               pre_to_max="0.7"
               pre_of_max="0.1"
               min="15"
@@ -37,10 +39,10 @@ from the upper bound smaller than "pre_to_max".
            
         <service name="edu.rice.rubis.servlets.SearchItemsByCategory">
            <softwareControlPrimitive>
-                <item name="Concurrency" provision="5" constraint="0.2" differences="1" 
+                <item name="Concurrency" provision="5" constraint="0.5" differences="1" 
               pre_to_max="0.7"
               pre_of_max="0.1"
-              min="2"
+              min="4"
               max="10"
               price_per_unit="0.5"/>
            </softwareControlPrimitive>
@@ -52,21 +54,21 @@ from the upper bound smaller than "pre_to_max".
            <!-- 0.0012" -->
            <QoS>
             <item name="Response Time" constraint="0.002" is_min="true" pre_to_change="0.7"/>
-            <item name="Throughput" constraint="2" is_min="false" pre_to_change="0.7" ep="Workload"/>
-            <item name="Availability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
-            <item name="Reliability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
+            <item name="Throughput" constraint="3" is_min="false" pre_to_change="0.7" ep="Workload"/>
+            <item name="Availability" constraint="0.9" is_min="false" pre_to_change="0.7"/>
+            <item name="Reliability" constraint="0.85" is_min="false" pre_to_change="0.7"/>
            </QoS>
            
-           <Cost budget="35"/>
+           <Cost budget="36"/>
            <!-- Cost can be created based on the other information -->
            
         </service>
         <service name="edu.rice.rubis.servlets.BrowseCategories">
             <softwareControlPrimitive>
-                <item name="Concurrency" provision="5" constraint="0.2" differences="1" 
+                <item name="Concurrency" provision="5" constraint="0.5" differences="1" 
               pre_to_max="0.7"
               pre_of_max="0.1"
-              min="2"
+              min="4"
               max="10"
               price_per_unit="0.5"/>
            </softwareControlPrimitive>
@@ -78,12 +80,12 @@ from the upper bound smaller than "pre_to_max".
            
            <QoS>
             <item name="Response Time" constraint="0.002" is_min="true" pre_to_change="0.7"/>
-            <item name="Throughput" constraint="2" is_min="false" pre_to_change="0.7" ep="Workload"/>
-            <item name="Availability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
-            <item name="Reliability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
+            <item name="Throughput" constraint="3" is_min="false" pre_to_change="0.7" ep="Workload"/>
+            <item name="Availability" constraint="0.9" is_min="false" pre_to_change="0.7"/>
+            <item name="Reliability" constraint="0.85" is_min="false" pre_to_change="0.7"/>
            </QoS>
            
-           <Cost budget="35"/>
+           <Cost budget="33"/>
            <!-- Cost can be created based on the other information -->
            
         </service>
@@ -200,10 +202,10 @@ from the upper bound smaller than "pre_to_max".
            
         <service name="edu.rice.rubis.servlets.SearchItemsByRegion">
                <softwareControlPrimitive>
-                <item name="Concurrency" provision="5" constraint="0.2" differences="1" 
+                <item name="Concurrency" provision="5" constraint="0.5" differences="1" 
               pre_to_max="0.7"
               pre_of_max="0.1"
-              min="2"
+              min="4"
               max="10"
               price_per_unit="0.5"/>
            </softwareControlPrimitive>
@@ -215,9 +217,9 @@ from the upper bound smaller than "pre_to_max".
            
             <QoS>
             <item name="Response Time" constraint="0.002" is_min="true" pre_to_change="0.7"/>
-            <item name="Throughput" constraint="2" is_min="false" pre_to_change="0.7" ep="Workload"/>
-            <item name="Availability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
-            <item name="Reliability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
+            <item name="Throughput" constraint="2.5" is_min="false" pre_to_change="0.7" ep="Workload"/>
+            <item name="Availability" constraint="0.9" is_min="false" pre_to_change="0.7"/>
+            <item name="Reliability" constraint="0.85" is_min="false" pre_to_change="0.7"/>
            </QoS>
            
            <Cost budget="35"/>
@@ -226,10 +228,10 @@ from the upper bound smaller than "pre_to_max".
         </service>
         <service name="edu.rice.rubis.servlets.BrowseCategories">
             <softwareControlPrimitive>
-                <item name="Concurrency" provision="5" constraint="0.2" differences="1" 
+                <item name="Concurrency" provision="5" constraint="0.5" differences="1" 
               pre_to_max="0.7"
               pre_of_max="0.1"
-              min="2"
+              min="4"
               max="10"
               price_per_unit="0.5"/>
            </softwareControlPrimitive>
@@ -241,12 +243,12 @@ from the upper bound smaller than "pre_to_max".
            
            <QoS>
             <item name="Response Time" constraint="0.002" is_min="true" pre_to_change="0.7"/>
-            <item name="Throughput" constraint="2" is_min="false" pre_to_change="0.7" ep="Workload"/>
-            <item name="Availability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
-            <item name="Reliability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
+            <item name="Throughput" constraint="3" is_min="false" pre_to_change="0.7" ep="Workload"/>
+            <item name="Availability" constraint="0.9" is_min="false" pre_to_change="0.7"/>
+            <item name="Reliability" constraint="0.85" is_min="false" pre_to_change="0.7"/>
            </QoS>
            
-           <Cost budget="35"/>
+           <Cost budget="39.9"/>
            <!-- Cost can be created based on the other information -->
            
         </service>
@@ -362,7 +364,7 @@ from the upper bound smaller than "pre_to_max".
            
         <service name="edu.rice.rubis.servlets.BrowseRegions">
                <softwareControlPrimitive>
-                <item name="Concurrency" provision="5" constraint="0.2" differences="1" 
+                <item name="Concurrency" provision="5" constraint="0.5" differences="1" 
               pre_to_max="0.7"
               pre_of_max="0.1"
               min="4"
@@ -376,23 +378,23 @@ from the upper bound smaller than "pre_to_max".
            </environmentalPrimitive>
            
             <QoS>
-            <item name="Response Time" constraint="0.002" is_min="true" pre_to_change="0.7"/>
-            <item name="Throughput" constraint="1" is_min="false" pre_to_change="0.7" ep="Workload"/>
-            <item name="Availability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
-            <item name="Reliability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
+            <item name="Response Time" constraint="0.004" is_min="true" pre_to_change="0.7"/>
+            <item name="Throughput" constraint="2.3" is_min="false" pre_to_change="0.7" ep="Workload"/>
+            <item name="Availability" constraint="0.85" is_min="false" pre_to_change="0.7"/>
+            <item name="Reliability" constraint="0.9" is_min="false" pre_to_change="0.7"/>
            </QoS>
            
-           <Cost budget="35"/>
+           <Cost budget="30.6"/>
            <!-- Cost can be created based on the other information -->
            
         </service>
         <service name="edu.rice.rubis.servlets.SearchItemsByCategory">
 
              <softwareControlPrimitive>
-                <item name="Concurrency" provision="5" constraint="0.2" differences="1" 
+                <item name="Concurrency" provision="5" constraint="0.5" differences="1" 
               pre_to_max="0.7"
               pre_of_max="0.1"
-              min="2"
+              min="4"
               max="10"
               price_per_unit="0.5"/>
            </softwareControlPrimitive>
@@ -404,9 +406,9 @@ from the upper bound smaller than "pre_to_max".
            
           <QoS>
             <item name="Response Time" constraint="0.002" is_min="true" pre_to_change="0.7"/>
-            <item name="Throughput" constraint="2" is_min="false" pre_to_change="0.7" ep="Workload"/>
-            <item name="Availability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
-            <item name="Reliability" constraint="0.8" is_min="false" pre_to_change="0.7"/>
+            <item name="Throughput" constraint="3" is_min="false" pre_to_change="0.7" ep="Workload"/>
+            <item name="Availability" constraint="0.9" is_min="false" pre_to_change="0.7"/>
+            <item name="Reliability" constraint="0.9" is_min="false" pre_to_change="0.7"/>
            </QoS>
            
            <Cost budget="35"/>
