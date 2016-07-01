@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import jmetal.core.Solution;
 import jmetal.core.SolutionSet;
 import jmetal.metaheuristics.moead.MOEAD_SAS_main;
 import jmetal.problems.SASAlgorithmAdaptor;
@@ -55,7 +56,7 @@ public class MOEARegion extends Region {
 			MOEASolutionInstantiator inst = new MOEASolutionInstantiator(objectives);
 			
             SASAlgorithmAdaptor algorithm = getAlgorithm();
-			SolutionSet set = null;
+			Solution set = null;
 			try {
 				set = algorithm.execute(inst, vars, objectives.size(), 0);		
 			} catch (Exception e) {
@@ -64,7 +65,7 @@ public class MOEARegion extends Region {
 			}
 
 			
-			result = MOEASolutionAdaptor.getInstance().convertSolution(set.get(0)/*Use the first one, as the list should all be knee points*/
+			result = MOEASolutionAdaptor.getInstance().convertSolution(set/*Use the first one, as the list should all be knee points*/
 					,objectives.get(0));
 			print(result);
 

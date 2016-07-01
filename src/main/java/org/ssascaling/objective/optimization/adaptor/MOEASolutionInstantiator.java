@@ -88,5 +88,17 @@ public class MOEASolutionInstantiator implements SASSolutionInstantiator {
 		return sol;
 	}
 
+	@Override
+	public Solution getSolution(int objective_number) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double[][] getLambda() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
